@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { MapView, Permissions, Location } from 'expo';
 
+// Todo fix latitudeDelta and longitude delta
 export default class Map extends Component {
   constructor(props) {
     super(props);
@@ -29,10 +30,23 @@ export default class Map extends Component {
       let location = await Location.getCurrentPositionAsync({
         enableHighAccuracy: true,
       });
-      // this.setState({ permissionGranted: true, location: location.coords });
+      this.setState({
+        permissionGranted: true,
+        location: {
+          ...location.coords,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        },
+      });
     }
   };
   render() {
-    return <MapView style={{ flex: 1 }} initialRegion={this.state.location} />;
+    return (
+      <MapView
+        showsTraffic
+        style={{ flex: 1 }}
+        initialRegion={this.state.location}
+      />
+    );
   }
 }
