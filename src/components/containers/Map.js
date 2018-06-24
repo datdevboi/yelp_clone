@@ -27,7 +27,9 @@ export default class Map extends Component {
     const response = await Permissions.askAsync(Permissions.LOCATION);
 
     if (response.status === 'granted') {
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: true,
+      });
       this.setState({
         permissionGranted: true,
         location: {
