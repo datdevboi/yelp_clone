@@ -27,9 +27,7 @@ export default class Map extends Component {
     const response = await Permissions.askAsync(Permissions.LOCATION);
 
     if (response.status === 'granted') {
-      let location = await Location.getCurrentPositionAsync({
-        enableHighAccuracy: true,
-      });
+      let location = await Location.getCurrentPositionAsync({});
       this.setState({
         permissionGranted: true,
         location: {
@@ -40,13 +38,25 @@ export default class Map extends Component {
       });
     }
   };
+
+  handleNoPermissions = () => {
+    if (!this.state.permissionGranted) {
+      return (
+        <View>
+          <Text>Need permission to display</Text>
+        </View>
+      );
+    } else {
+      return (
+        <MapView
+          showsTraffic
+          style={{ flex: 1 }}
+          initialRegion={this.state.location}
+        />
+      );
+    }
+  };
   render() {
-    return (
-      <MapView
-        showsTraffic
-        style={{ flex: 1 }}
-        initialRegion={this.state.location}
-      />
-    );
+    return this.handleNoPermissions();
   }
 }
